@@ -1,17 +1,17 @@
 # This workflow integrates Scan with GitHub's code scanning feature
 # Scan is a free open-source security tool for modern DevOps teams from ShiftLeft
 # Visit https://slscan.io/en/latest/integrations/code-scan for help
-name: SL Scan
+name: 'scan (ShiftLeftSecurity)'
 
 on:
   push:
-    branches: [ main ]
+    branches:
+    - main
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ main ]
 
 jobs:
-  Scan-Build:
+  scan:
+    name: 'scan (ShiftLeftSecurity)'
     # Scan runs on ubuntu, mac and windows
     runs-on: ubuntu-latest
     steps:
