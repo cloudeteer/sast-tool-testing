@@ -44,7 +44,7 @@ jobs:
         # comma separated list of external (custom) checks repositories
         # external_checks_repos: # optional
         # The format of the output. cli, json, junitxml, github_failed_only
-        output_format: json # optional
+        output_format: json, sarif # optional
         # download external terraform modules from public git repositories and terraform registry:true, false
         download_external_modules: true # optional
         # log level
