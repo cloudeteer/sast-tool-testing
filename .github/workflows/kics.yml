@@ -21,15 +21,16 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Mkdir results-dir
+    - name: Mkdir kics
       run: mkdir -p kics
     - name: run kics Scan
       uses: checkmarx/kics-action@v1.2
       with:
         path: 'terraform'
-        output_path: kics
+        output_path: './kics'
         platform_type: terraform
         output_formats: 'json,sarif'
+        ignore_on_exit: results
     - name: Show results
       run: |
         cat kics/results.sarif
