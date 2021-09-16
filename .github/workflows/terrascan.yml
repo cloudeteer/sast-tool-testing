@@ -31,7 +31,7 @@ jobs:
         policy_type: 'aws'
         only_warn: true
         verbose: true
-        #sarif_upload: true
+        sarif_upload: true
         #non_recursive:
         iac_dir: terraform/
         #policy_path:
