@@ -25,7 +25,7 @@ jobs:
     - name: Checkov AWS
       # You may pin to the exact commit or the version.
       # uses: bridgecrewio/checkov-action@00cc657f4d415593e5c8897bc87f490497ccb5f9
-      uses: bridgecrewio/checkov-action@v12.641.0
+      uses: bridgecrewio/checkov-action@master
       with:
         # directory with infrastructure code to scan
         directory: terraform/ # optional, default is .
@@ -36,7 +36,7 @@ jobs:
         # display only failed checks
         quiet: true # optional should be true
         # do not return an error code if there are failed checks
-        soft_fail: false # optional
+        soft_fail: true # optional
         # run only on a specific infrastructure
         framework: terraform # optional
         # comma separated list of external (custom) checks directories
@@ -49,3 +49,13 @@ jobs:
         download_external_modules: true # optional
         # log level
         # log_level: # optional, default is WARNING
+    - name: Expose report
+      uses: actions/upload-artifact@v2
+      with:
+        name: SARIF results
+        path: checkov_results.sarif
+    # Uploads results.sarif to GitHub repository using the upload-sarif action
+    - uses: github/codeql-action/upload-sarif@v1
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: checkov_results.sarif
