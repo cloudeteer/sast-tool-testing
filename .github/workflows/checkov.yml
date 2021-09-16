@@ -25,7 +25,7 @@ jobs:
     - name: Checkov AWS
       # You may pin to the exact commit or the version.
       # uses: bridgecrewio/checkov-action@00cc657f4d415593e5c8897bc87f490497ccb5f9
-      uses: bridgecrewio/checkov-action@master
+      uses: bridgecrewio/checkov-action@2.0.418
       with:
         # directory with infrastructure code to scan
         directory: terraform/ # optional, default is .
@@ -44,18 +44,30 @@ jobs:
         # comma separated list of external (custom) checks repositories
         # external_checks_repos: # optional
         # The format of the output. cli, json, junitxml, github_failed_only
-        output_format: sarif # optional
+        output_format: github_failed_only # optional
         # download external terraform modules from public git repositories and terraform registry:true, false
         download_external_modules: true # optional
         # log level
         # log_level: # optional, default is WARNING
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7.7
+    - name: Run checkov analysis
+      run: |
+        python --version
+        python -m pip install --upgrade pip setuptools
+        python -m pip install --upgrade 'checkov==2.0.418'
+        checkov --version
+        checkov --framework terraform -s -d terraform/ -o sarif > checkov.sarif
     - name: Expose report
       uses: actions/upload-artifact@v2
       with:
         name: SARIF results
-        path: results.sarif
+        path: checkov.sarif
     # Uploads results.sarif to GitHub repository using the upload-sarif action
     - uses: github/codeql-action/upload-sarif@v1
       with:
         # Path to SARIF file relative to the root of the repository
-        sarif_file: results.sarif
+        sarif_file: checkov.sarif
